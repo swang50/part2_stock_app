@@ -5,34 +5,51 @@ const { MongoClient } = require('mongodb');
 const uri = 'mongodb+srv://shuyiwang648513:20040405Wsy@cluster0.7al7lkw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 const client = new MongoClient(uri);
 
+let db, collection;
+
+// Connect once, reuse later
+async function initMongo() {
+  try {
+    await client.connect();
+    db = client.db('Stock');
+    collection = db.collection('PublicCompanies');
+    console.log("✅ MongoDB connected");
+  } catch (err) {
+    console.log("❌ MongoDB connection error:", err);
+  }
+}
+
 app.set('view engine', 'ejs');
 
+// Route: Home Page
 app.get('/', (req, res) => {
   res.render('home');
 });
 
+// Route: Process Search
 app.get('/process', async (req, res) => {
   const search = req.query.search;
   const type = req.query.type;
-  let results = [];
+
+  const query = type === 'ticker'
+    ? { ticker: search }
+    : { company: search };
 
   try {
-    await client.connect();
-    const db = client.db('Stock');
-    const collection = db.collection('PublicCompanies');
-
-    const query = type === 'ticker'
-      ? { ticker: search }
-      : { company: search };
-
-    results = await collection.find(query).toArray();
-    console.log(results);
+    const results = await collection.find(query).toArray();
+    console.log("🔎 Search results:", results);
     res.render('result', { results });
   } catch (err) {
-    res.send('Error: ' + err);
-  } finally {
-    await client.close();
+    console.error("❌ Error during search:", err);
+    res.send("Error occurred while searching.");
   }
+});
+
+// Start the server
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log('App running on port ' + port);
+  initMongo(); // connect to MongoDB once when the app starts
 });
 
 const port = process.env.PORT || 3000;
