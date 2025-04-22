@@ -1,0 +1,7 @@
+<h2>Results:</h2>
+<ul>
+  <% results.forEach(function(r) { %>
+    <li><strong><%= r.company %></strong> - <%= r.ticker %> - $<%= r.price %></li>
+  <% }); %>
+</ul>
+<a href="/">Back</a>
