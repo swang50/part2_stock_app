@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const { MongoClient } = require('mongodb');
 
-const uri = 'YOUR_MONGODB_ATLAS_URL';
+const uri = 'mongodb+srv://shuyiwang648513:20040405Wsy@cluster0.7al7lkw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 const client = new MongoClient(uri);
 
 app.set('view engine', 'ejs');
