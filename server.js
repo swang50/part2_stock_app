@@ -4,7 +4,7 @@ const { MongoClient } = require('mongodb');
 const app = express();
 app.set('view engine', 'ejs');
 
-const uri = 'mongodb+srv://shuyiwang648513:20040405Wsy%40@cluster0.7al7lkw.mongodb.net/Stock?retryWrites=true&w=majority&ssl=true';
+const uri = 'mongodb+srv://shuyiwang648513:20040405Wsy%40@cluster0.7al7lkw.mongodb.net/Stock?retryWrites=true&w=majority&tls=true';
 
 const client = new MongoClient(uri);
 let collection; // <== global variable to reuse after connection
