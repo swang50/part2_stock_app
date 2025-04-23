@@ -1,7 +1,14 @@
 <h2>Results:</h2>
 <ul>
   <% results.forEach(function(r) { %>
-    <li><strong><%= r.company %></strong> - <%= r.ticker %> - $<%= r.price %></li>
+    <li>
+      <strong><%= r.company %></strong> - <%= r.ticker %> - Stored Price: $<%= r.price %><br>
+      <% if (r.realTimePrice) { %>
+        🔁 Real-Time Price: <strong>$<%= r.realTimePrice %></strong>
+      <% } else { %>
+        ⚠️ Real-time data not available.
+      <% } %>
+    </li>
   <% }); %>
 </ul>
 <a href="/">Back</a>
