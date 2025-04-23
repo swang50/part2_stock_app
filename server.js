@@ -35,7 +35,7 @@ app.get('/process', async (req, res) => {
     if (!collection) throw new Error("MongoDB not connected!");
     const results = await collection.find(query).toArray();
     console.log("🔎 Results:", results);
-    res.render('result', { results });
+    res.render('results', { results });
   } catch (err) {
     console.error("❌ Error during search:", err);
     res.send("Error searching database.");
