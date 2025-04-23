@@ -46,6 +46,7 @@ app.get('/process', async (req, res) => {
     try {
       const alphaURL = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${search}&apikey=${apiKey}`;
       const alphaResponse = await axios.get(alphaURL);
+      console.log("🔁 Alpha Vantage response:", alphaResponse.data);
       realTimePrice = alphaResponse.data['Global Quote']['05. price'];
     } catch (err) {
       console.warn("⚠️ Could not fetch real-time price:", err.message);
