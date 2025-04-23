@@ -1,3 +1,6 @@
+const axios = require('axios');
+const apiKey = process.env.ALPHA_VANTAGE_KEY;
+
 const express = require('express');
 const { MongoClient } = require('mongodb');
 
@@ -34,13 +37,20 @@ app.get('/process', async (req, res) => {
   try {
     if (!collection) throw new Error("MongoDB not connected!");
     const results = await collection.find(query).toArray();
+
+    // Real-time stock price from Alpha Vantage
+    const alphaURL = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${search}&apikey=${apiKey}`;
+    const alphaResponse = await axios.get(alphaURL);
+    const realTimePrice = alphaResponse.data['Global Quote']['05. price'];
+
     console.log("🔎 Results:", results);
-    res.render('results', { results });
+    res.render('results', { results, realTimePrice }); // Pass realTimePrice to EJS
   } catch (err) {
     console.error("❌ Error during search:", err);
-    res.send("Error searching database.");
+    res.send("Error searching database or fetching stock price.");
   }
 });
+
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
